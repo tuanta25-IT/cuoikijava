@@ -29,8 +29,7 @@ public class AuditDao {
                     rs.getString("Module"),
                     rs.getString("Action"),
                     rs.getString("Details"),
-                    rs.getTimestamp("CreatedAt").toLocalDateTime()
-            ));
+                    rs.getTimestamp("CreatedAt").toLocalDateTime()));
             return null;
         });
         return out;

@@ -15,13 +15,15 @@ public class ReminderService {
 
     public void sendDueReminders(int daysBefore) throws SQLException {
         /**
-         * Gửi email nhắc trả cho các phiếu mượn có `NgayTraDuKien` bằng ngày mục tiêu (hôm nay + daysBefore).
+         * Gửi email nhắc trả cho các phiếu mượn có `NgayTraDuKien` bằng ngày mục tiêu
+         * (hôm nay + daysBefore).
          */
         LocalDate target = LocalDate.now().plusDays(daysBefore);
         java.util.List<com.library.desktop.model.LoanInfo> loans = loanDao.findActiveLoansDueOn(target);
         for (com.library.desktop.model.LoanInfo loan : loans) {
             String to = loan.readerEmail;
-            if (to == null || to.isBlank()) continue;
+            if (to == null || to.isBlank())
+                continue;
             String subject = "Nhắc trả sách - Còn " + daysBefore + " ngày";
             StringBuilder body = new StringBuilder();
             body.append("<p>Xin chào <strong>").append(loan.readerName).append("</strong>,</p>");

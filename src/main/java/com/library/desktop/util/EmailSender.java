@@ -44,7 +44,8 @@ public final class EmailSender {
         from = resolveProperty(config.getProperty("mail.from", "no-reply@library.local"));
     }
 
-    private EmailSender() {}
+    private EmailSender() {
+    }
 
     public static boolean isEnabled() {
         /**
@@ -86,9 +87,11 @@ public final class EmailSender {
 
     private static String resolveProperty(String raw) {
         /**
-         * Thay thế tham số dạng ${ENV:default} bằng giá trị environment hoặc giá trị mặc định.
+         * Thay thế tham số dạng ${ENV:default} bằng giá trị environment hoặc giá trị
+         * mặc định.
          */
-        if (raw == null) return null;
+        if (raw == null)
+            return null;
         String s = raw;
         java.util.regex.Pattern p = java.util.regex.Pattern.compile("\\$\\{([^:}]+):([^}]+)\\}");
         java.util.regex.Matcher m = p.matcher(s);
@@ -97,7 +100,8 @@ public final class EmailSender {
             String env = m.group(1);
             String def = m.group(2);
             String val = System.getenv(env);
-            if (val == null || val.isBlank()) val = def;
+            if (val == null || val.isBlank())
+                val = def;
             m.appendReplacement(sb, java.util.regex.Matcher.quoteReplacement(val));
         }
         m.appendTail(sb);

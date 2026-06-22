@@ -17,7 +17,8 @@ import java.util.List;
 
 public class AuditPanel extends JPanel {
     private final AuditDao auditDao = new AuditDao();
-    private final DefaultTableModel model = new DefaultTableModel(new Object[]{"ID", "Người", "Module", "Hành động", "Chi tiết", "Thời gian"}, 0) {
+    private final DefaultTableModel model = new DefaultTableModel(
+            new Object[] { "ID", "Người", "Module", "Hành động", "Chi tiết", "Thời gian" }, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -28,13 +29,13 @@ public class AuditPanel extends JPanel {
         /**
          * Constructor: khởi tạo bảng audit và các nút thao tác.
          */
-        setLayout(new BorderLayout(10,10));
+        setLayout(new BorderLayout(10, 10));
         setBackground(AppTheme.BACKGROUND);
         JTable table = new JTable(model);
         AppTheme.decorateTable(table);
         add(new JScrollPane(table), BorderLayout.CENTER);
 
-        JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT, 8,8));
+        JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 8));
         top.setOpaque(false);
         JButton refresh = new JButton("Làm mới");
         JButton excel = new JButton("Excel");
@@ -52,10 +53,11 @@ public class AuditPanel extends JPanel {
         try {
             List<AuditEntry> rows = auditDao.findAll();
             for (AuditEntry a : rows) {
-                model.addRow(new Object[]{a.id(), a.username(), a.module(), a.action(), a.details(), a.createdAt()});
+                model.addRow(new Object[] { a.id(), a.username(), a.module(), a.action(), a.details(), a.createdAt() });
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Không tải được audit log: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Không tải được audit log: " + ex.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }

@@ -11,7 +11,8 @@ import com.library.desktop.model.AppUser;
 public final class Session {
     private static volatile AppUser currentUser;
 
-    private Session() {}
+    private Session() {
+    }
 
     public static void setCurrentUser(AppUser user) {
         /**

@@ -17,7 +17,8 @@ public final class DatabaseManager {
 
     public static Connection getConnection() throws SQLException {
         /**
-         * Tạo và trả về một `Connection` đến SQL Server dựa trên cấu hình trong `desktop.properties`.
+         * Tạo và trả về một `Connection` đến SQL Server dựa trên cấu hình trong
+         * `desktop.properties`.
          */
         String host = DesktopConfig.get("db.host");
         String port = DesktopConfig.get("db.port");

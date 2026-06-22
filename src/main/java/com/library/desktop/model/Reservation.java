@@ -9,13 +9,12 @@ package com.library.desktop.model;
 import java.time.LocalDateTime;
 
 public record Reservation(
-        int id,
-        int readerId,
-        String readerName,
-        int bookId,
-        String bookTitle,
-        LocalDateTime reservedAt,
-        LocalDateTime holdUntil,
-        String status
-) {
+                int id,
+                int readerId,
+                String readerName,
+                int bookId,
+                String bookTitle,
+                LocalDateTime reservedAt,
+                LocalDateTime holdUntil,
+                String status) {
 }

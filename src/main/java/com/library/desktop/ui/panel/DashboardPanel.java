@@ -51,7 +51,7 @@ public class DashboardPanel extends JPanel {
     private final DashboardDao dashboardDao = new DashboardDao();
     private final JSpinner fromSpinner = new JSpinner(new SpinnerDateModel());
     private final JSpinner toSpinner = new JSpinner(new SpinnerDateModel());
-    private final DefaultTableModel statsModel = new DefaultTableModel(new Object[]{"Chỉ tiêu", "Giá trị"}, 0) {
+    private final DefaultTableModel statsModel = new DefaultTableModel(new Object[] { "Chỉ tiêu", "Giá trị" }, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -159,7 +159,7 @@ public class DashboardPanel extends JPanel {
         try {
             Map<String, Integer> stats = dashboardDao.getSummaryStats();
             for (Map.Entry<String, Integer> entry : stats.entrySet()) {
-                statsModel.addRow(new Object[]{entry.getKey(), entry.getValue()});
+                statsModel.addRow(new Object[] { entry.getKey(), entry.getValue() });
                 summaryCards.add(statCard(entry.getKey(), entry.getValue()));
             }
 
@@ -205,9 +205,11 @@ public class DashboardPanel extends JPanel {
             for (var e : top.entrySet()) {
                 msg.append(e.getKey()).append(" : ").append(e.getValue()).append("\n");
             }
-            javax.swing.JOptionPane.showMessageDialog(this, msg.toString(), "Báo cáo theo thời gian", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, msg.toString(), "Báo cáo theo thời gian",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải báo cáo: " + ex.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi tải báo cáo: " + ex.getMessage(), "Lỗi",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -230,8 +232,7 @@ public class DashboardPanel extends JPanel {
         JPanel card = new JPanel(new BorderLayout());
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(226, 232, 240)),
-                BorderFactory.createEmptyBorder(16, 16, 16, 16)
-        ));
+                BorderFactory.createEmptyBorder(16, 16, 16, 16)));
         card.setBackground(AppTheme.SURFACE);
         JLabel name = new JLabel(label);
         name.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -247,8 +248,7 @@ public class DashboardPanel extends JPanel {
         JPanel card = new JPanel(new BorderLayout(0, 10));
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(226, 232, 240)),
-                BorderFactory.createEmptyBorder(14, 14, 14, 14)
-        ));
+                BorderFactory.createEmptyBorder(14, 14, 14, 14)));
         card.setBackground(AppTheme.SURFACE);
         card.setPreferredSize(new Dimension(0, BASE_CHART_CARD_HEIGHT));
         card.setMinimumSize(new Dimension(0, BASE_CHART_CARD_HEIGHT));
@@ -365,11 +365,13 @@ public class DashboardPanel extends JPanel {
                 g2.setColor(new Color(233, 238, 246));
                 g2.fillRoundRect(labelWidth, y, barAreaWidth, barHeight, 12, 12);
 
-                g2.setPaint(new GradientPaint(labelWidth, y, soft, labelWidth, y + barHeight, new Color(255, 255, 255, 0)));
+                g2.setPaint(
+                        new GradientPaint(labelWidth, y, soft, labelWidth, y + barHeight, new Color(255, 255, 255, 0)));
                 g2.fillRoundRect(labelWidth, y, barAreaWidth, barHeight, 12, 12);
 
                 Paint oldPaint = g2.getPaint();
-                g2.setPaint(new GradientPaint(labelWidth, y, base, labelWidth + barWidth, y + barHeight, base.darker()));
+                g2.setPaint(
+                        new GradientPaint(labelWidth, y, base, labelWidth + barWidth, y + barHeight, base.darker()));
                 g2.fillRoundRect(labelWidth, y, barWidth, barHeight, 12, 12);
                 g2.setPaint(oldPaint);
 

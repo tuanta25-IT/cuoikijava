@@ -47,7 +47,9 @@ public class LoanPanel extends JPanel {
     private final AccessProfile accessProfile;
 
     private final DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"Mã phiếu", "Mã độc giả", "Độc giả", "Ngày mượn", "Ngày trả dự kiến", "Ngày trả", "Trạng thái"}, 0) {
+            new Object[] { "Mã phiếu", "Mã độc giả", "Độc giả", "Ngày mượn", "Ngày trả dự kiến", "Ngày trả",
+                    "Trạng thái" },
+            0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -59,7 +61,7 @@ public class LoanPanel extends JPanel {
     private final List<Loan> loans = new ArrayList<>();
 
     private final JTextField searchField = new JTextField(14);
-    private final JComboBox<FilterItem> statusFilterBox = new JComboBox<>(new FilterItem[]{
+    private final JComboBox<FilterItem> statusFilterBox = new JComboBox<>(new FilterItem[] {
             new FilterItem("ALL", "Tất cả"),
             new FilterItem("BORROWING", "Đang mượn"),
             new FilterItem("RETURNED", "Đã trả"),
@@ -193,7 +195,7 @@ public class LoanPanel extends JPanel {
             List<Loan> all = loanDao.findAll();
             loans.addAll(all);
             for (Loan loan : all) {
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         loan.id(),
                         loan.readerId(),
                         loan.readerName(),
@@ -217,8 +219,10 @@ public class LoanPanel extends JPanel {
     private void decorateOverdueRows() {
         table.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
             @Override
-            public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                java.awt.Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                java.awt.Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+                        column);
                 try {
                     int modelRow = table.convertRowIndexToModel(row);
                     Object due = model.getValueAt(modelRow, 4);
@@ -385,7 +389,8 @@ public class LoanPanel extends JPanel {
                         || readerName.contains(keyword)
                         || status.contains(keyword);
 
-                boolean matchesStatus = selectedStatus == null || "ALL".equals(selectedStatus.code) || status.equalsIgnoreCase(selectedStatus.label.toLowerCase());
+                boolean matchesStatus = selectedStatus == null || "ALL".equals(selectedStatus.code)
+                        || status.equalsIgnoreCase(selectedStatus.label.toLowerCase());
                 return matchesKeyword && matchesStatus;
             }
 

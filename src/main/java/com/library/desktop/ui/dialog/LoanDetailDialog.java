@@ -57,7 +57,7 @@ public class LoanDetailDialog extends JDialog {
     private final JSpinner dueDateSpinner = new JSpinner(new SpinnerDateModel());
 
     private final DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"Ma chi tiet", "Ma sach", "Tieu de sach", "So luong"}, 0) {
+            new Object[] { "Ma chi tiet", "Ma sach", "Tieu de sach", "So luong" }, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -103,7 +103,8 @@ public class LoanDetailDialog extends JDialog {
 
     private JPanel buildHeader() {
         /**
-         * Xây dựng phần header của dialog (thông tin tóm tắt phiếu: mã, độc giả, ngày, trạng thái).
+         * Xây dựng phần header của dialog (thông tin tóm tắt phiếu: mã, độc giả, ngày,
+         * trạng thái).
          */
         JPanel outer = new JPanel(new BorderLayout());
         outer.setBorder(BorderFactory.createEmptyBorder(16, 16, 0, 16));
@@ -157,7 +158,8 @@ public class LoanDetailDialog extends JDialog {
 
     private JPanel buildCenter() {
         /**
-         * Xây dựng phần chính (center) của dialog, bao gồm form thêm sách và trình chỉnh sửa ngày.
+         * Xây dựng phần chính (center) của dialog, bao gồm form thêm sách và trình
+         * chỉnh sửa ngày.
          */
         JPanel center = new JPanel(new BorderLayout(12, 12));
         center.setOpaque(false);
@@ -195,8 +197,10 @@ public class LoanDetailDialog extends JDialog {
         removeButton.addActionListener(e -> removeItem());
         returnButton.addActionListener(e -> markReturned());
         renewButton.addActionListener(e -> renew());
-        exportExcelButton.addActionListener(e -> TableExportUtils.exportExcel(this, "phieu_muon_" + loanId + "_chi_tiet", table));
-        exportPdfButton.addActionListener(e -> TableExportUtils.exportPdf(this, "phieu_muon_" + loanId + "_chi_tiet", table));
+        exportExcelButton.addActionListener(
+                e -> TableExportUtils.exportExcel(this, "phieu_muon_" + loanId + "_chi_tiet", table));
+        exportPdfButton
+                .addActionListener(e -> TableExportUtils.exportPdf(this, "phieu_muon_" + loanId + "_chi_tiet", table));
 
         form.add(addButton);
         form.add(removeButton);
@@ -241,7 +245,8 @@ public class LoanDetailDialog extends JDialog {
                 bookBox.addItem(new BookItem(book.id(), book.title()));
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Không tải được danh sách sách: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Không tải được danh sách sách: " + ex.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -262,11 +267,14 @@ public class LoanDetailDialog extends JDialog {
             dueDateValue.setText(formatDate(currentLoan.dueDate()));
             returnedDateValue.setText(formatDate(currentLoan.returnedDate()));
             statusValue.setText(StatusText.loan(currentLoan.status()));
-            borrowDateSpinner.setValue(java.sql.Date.valueOf(currentLoan.borrowDate() == null ? LocalDate.now() : currentLoan.borrowDate()));
-            dueDateSpinner.setValue(java.sql.Date.valueOf(currentLoan.dueDate() == null ? LocalDate.now() : currentLoan.dueDate()));
+            borrowDateSpinner.setValue(java.sql.Date
+                    .valueOf(currentLoan.borrowDate() == null ? LocalDate.now() : currentLoan.borrowDate()));
+            dueDateSpinner.setValue(
+                    java.sql.Date.valueOf(currentLoan.dueDate() == null ? LocalDate.now() : currentLoan.dueDate()));
             applyPermissions();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Không tải được phiếu mượn: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Không tải được phiếu mượn: " + ex.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -279,16 +287,18 @@ public class LoanDetailDialog extends JDialog {
             items.addAll(loanDao.findItemsByLoanId(loanId));
             model.setRowCount(0);
             for (LoanItem item : items) {
-                model.addRow(new Object[]{item.detailId(), item.bookId(), item.bookTitle(), item.quantity()});
+                model.addRow(new Object[] { item.detailId(), item.bookId(), item.bookTitle(), item.quantity() });
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Không tải được chi tiết: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Không tải được chi tiết: " + ex.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void applyPermissions() {
         /**
-         * Áp dụng quyền sử dụng (enable/disable) các điều khiển theo trạng thái phiếu và quyền người dùng.
+         * Áp dụng quyền sử dụng (enable/disable) các điều khiển theo trạng thái phiếu
+         * và quyền người dùng.
          */
         boolean editableLoan = currentLoan != null && !"RETURNED".equalsIgnoreCase(currentLoan.status());
         boolean canEdit = accessProfile != null && accessProfile.manageLoans() && editableLoan;
@@ -305,7 +315,8 @@ public class LoanDetailDialog extends JDialog {
 
     private void refreshActionStates() {
         /**
-         * Cập nhật trạng thái các nút hành động (ví dụ bật/tắt nút xóa dựa trên selection).
+         * Cập nhật trạng thái các nút hành động (ví dụ bật/tắt nút xóa dựa trên
+         * selection).
          */
         boolean editableLoan = currentLoan != null && !"RETURNED".equalsIgnoreCase(currentLoan.status());
         boolean canEdit = accessProfile != null && accessProfile.manageLoans() && editableLoan;
@@ -340,7 +351,8 @@ public class LoanDetailDialog extends JDialog {
             protected void done() {
                 addButton.setEnabled(true);
                 if (workerEx != null) {
-                    JOptionPane.showMessageDialog(LoanDetailDialog.this, workerEx.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoanDetailDialog.this, workerEx.getMessage(), "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     loadLoan();
                     loadItems();
@@ -358,7 +370,8 @@ public class LoanDetailDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Hãy chọn dòng cần xóa.");
             return;
         }
-        int ok = JOptionPane.showConfirmDialog(this, "Xóa sách khỏi phiếu mượn?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        int ok = JOptionPane.showConfirmDialog(this, "Xóa sách khỏi phiếu mượn?", "Xác nhận",
+                JOptionPane.YES_NO_OPTION);
         if (ok != JOptionPane.YES_OPTION) {
             return;
         }
@@ -381,7 +394,8 @@ public class LoanDetailDialog extends JDialog {
             protected void done() {
                 removeButton.setEnabled(true);
                 if (workerEx != null) {
-                    JOptionPane.showMessageDialog(LoanDetailDialog.this, workerEx.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoanDetailDialog.this, workerEx.getMessage(), "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     loadLoan();
                     loadItems();
@@ -392,7 +406,8 @@ public class LoanDetailDialog extends JDialog {
 
     private void markReturned() {
         /**
-         * Đánh dấu phiếu mượn là đã trả, gửi email xác nhận nếu có thể và cập nhật giao diện.
+         * Đánh dấu phiếu mượn là đã trả, gửi email xác nhận nếu có thể và cập nhật giao
+         * diện.
          */
         String to = currentLoan == null ? null : currentLoan.readerEmail();
         String readerName = currentLoan == null ? "" : currentLoan.readerName();
@@ -425,7 +440,8 @@ public class LoanDetailDialog extends JDialog {
             protected void done() {
                 returnButton.setEnabled(true);
                 if (workerEx != null) {
-                    JOptionPane.showMessageDialog(LoanDetailDialog.this, workerEx.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoanDetailDialog.this, workerEx.getMessage(), "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
                 }
                 loadLoan();
                 loadItems();
@@ -458,7 +474,8 @@ public class LoanDetailDialog extends JDialog {
             protected void done() {
                 renewButton.setEnabled(true);
                 if (workerEx != null) {
-                    JOptionPane.showMessageDialog(LoanDetailDialog.this, workerEx.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoanDetailDialog.this, workerEx.getMessage(), "Lỗi",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     loadLoan();
                     loadItems();
@@ -469,7 +486,8 @@ public class LoanDetailDialog extends JDialog {
 
     private void saveDates() {
         /**
-         * Lưu các ngày (Ngày mượn, Ngày trả dự kiến) đã chỉnh sửa; chạy DAO cập nhật trong background.
+         * Lưu các ngày (Ngày mượn, Ngày trả dự kiến) đã chỉnh sửa; chạy DAO cập nhật
+         * trong background.
          */
         saveDatesButton.setEnabled(false);
         new javax.swing.SwingWorker<Void, Void>() {
@@ -503,11 +521,13 @@ public class LoanDetailDialog extends JDialog {
                     area.setRows(15);
                     area.setColumns(80);
                     javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(area);
-                    JOptionPane.showMessageDialog(LoanDetailDialog.this, scroll, "Lỗi khi cập nhật ngày: " + workerEx.getMessage(), JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(LoanDetailDialog.this, scroll,
+                            "Lỗi khi cập nhật ngày: " + workerEx.getMessage(), JOptionPane.ERROR_MESSAGE);
                 } else {
                     loadLoan();
                     loadItems();
-                    JOptionPane.showMessageDialog(LoanDetailDialog.this, "Đã cập nhật ngày mượn.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(LoanDetailDialog.this, "Đã cập nhật ngày mượn.", "Thông báo",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         }.execute();

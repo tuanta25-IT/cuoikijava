@@ -35,13 +35,13 @@ public class ReservationDao {
                 rs.getString("TieuDe"),
                 toLocalDateTime(rs.getTimestamp("NgayDat")),
                 toLocalDateTime(rs.getTimestamp("HanGiu")),
-                rs.getString("TrangThai")
-        ));
+                rs.getString("TrangThai")));
     }
 
     public void create(int readerId, int bookId, int holdHours) throws SQLException {
         /**
-         * Tạo một đặt trước mới với thời gian giữ `holdHours` tính từ thời điểm hiện tại.
+         * Tạo một đặt trước mới với thời gian giữ `holdHours` tính từ thời điểm hiện
+         * tại.
          */
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime holdUntil = now.plusHours(holdHours);

@@ -30,8 +30,7 @@ public class AuthDao {
                 rs.getString("Password"),
                 rs.getString("FullName"),
                 rs.getString("Role"),
-                rs.getBoolean("Active")
-        ), usernameOrEmail, usernameOrEmail);
+                rs.getBoolean("Active")), usernameOrEmail, usernameOrEmail);
 
         if (user == null) {
             return null;
@@ -39,7 +38,8 @@ public class AuthDao {
         return encoder.matches(rawPassword, user.passwordHash()) ? user : null;
     }
 
-    public AppUser registerUser(String username, String email, String fullName, String role, String rawPassword) throws SQLException {
+    public AppUser registerUser(String username, String email, String fullName, String role, String rawPassword)
+            throws SQLException {
         if (usernameExists(username)) {
             throw new IllegalArgumentException("Tên đăng nhập đã tồn tại.");
         }
@@ -60,10 +60,12 @@ public class AuthDao {
         try {
             if (com.library.desktop.util.EmailSender.isEnabled()) {
                 String subject = "Chào mừng đến với thư viện";
-                String body = "<p>Xin chào <strong>" + fullName + "</strong>,</p><p>Cảm ơn bạn đã đăng ký tài khoản.</p>";
+                String body = "<p>Xin chào <strong>" + fullName
+                        + "</strong>,</p><p>Cảm ơn bạn đã đăng ký tài khoản.</p>";
                 com.library.desktop.util.EmailSender.send(email, subject, body);
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return authenticate(username, rawPassword);
     }
 
@@ -89,8 +91,7 @@ public class AuthDao {
                 nextCardCode(),
                 mapReaderType(role),
                 0,
-                1
-        );
+                1);
     }
 
     private boolean readerExistsByEmail(String email) throws SQLException {

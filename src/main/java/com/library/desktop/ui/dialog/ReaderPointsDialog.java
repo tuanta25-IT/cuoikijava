@@ -11,9 +11,12 @@ import java.util.List;
 
 public class ReaderPointsDialog extends JDialog {
     private final int readerId;
-    private final DefaultTableModel model = new DefaultTableModel(new Object[]{"ID","Người","Ghi chú","Thời gian"}, 0) {
+    private final DefaultTableModel model = new DefaultTableModel(
+            new Object[] { "ID", "Người", "Ghi chú", "Thời gian" }, 0) {
         @Override
-        public boolean isCellEditable(int row, int column) { return false; }
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
     };
 
     public ReaderPointsDialog(Window owner, int readerId) {
@@ -21,7 +24,7 @@ public class ReaderPointsDialog extends JDialog {
         this.readerId = readerId;
         setSize(640, 360);
         setLocationRelativeTo(owner);
-        setLayout(new BorderLayout(8,8));
+        setLayout(new BorderLayout(8, 8));
         JTable table = new JTable(model);
         AppTheme.decorateTable(table);
         add(new JScrollPane(table), BorderLayout.CENTER);
@@ -52,10 +55,11 @@ public class ReaderPointsDialog extends JDialog {
             PointHistoryDao dao = new PointHistoryDao();
             List<AuditEntry> rows = dao.findByReader(readerId);
             for (AuditEntry a : rows) {
-                model.addRow(new Object[]{a.id(), a.username(), a.details(), a.createdAt()});
+                model.addRow(new Object[] { a.id(), a.username(), a.details(), a.createdAt() });
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Không tải được lịch sử điểm: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Không tải được lịch sử điểm: " + ex.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -68,7 +72,8 @@ public class ReaderPointsDialog extends JDialog {
         panel.add(new JLabel("Lý do:"));
         panel.add(reasonField);
 
-        int ok = JOptionPane.showConfirmDialog(this, panel, "Điều chỉnh điểm", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int ok = JOptionPane.showConfirmDialog(this, panel, "Điều chỉnh điểm", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
         if (ok != JOptionPane.OK_OPTION) {
             return;
         }

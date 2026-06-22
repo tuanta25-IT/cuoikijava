@@ -17,11 +17,13 @@ import java.util.List;
 import java.util.Random;
 
 public final class DBMigration {
-    private DBMigration() {}
+    private DBMigration() {
+    }
 
     public static void runMigrations() {
         /**
-         * Kiểm tra và chạy các lệnh tạo bảng nếu chưa tồn tại. Ghi nhật ký lỗi ra stderr nếu có.
+         * Kiểm tra và chạy các lệnh tạo bảng nếu chưa tồn tại. Ghi nhật ký lỗi ra
+         * stderr nếu có.
          */
         try (Connection con = DatabaseManager.getConnection(); Statement st = con.createStatement()) {
             String audit = "IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'AuditLog') BEGIN " +
@@ -40,10 +42,11 @@ public final class DBMigration {
 
     private static void seedPointHistoryIfEmpty(Connection con) {
         /**
-         * Nếu bảng PointHistory rỗng, tạo dữ liệu seed mẫu để tiện cho demo hoặc phát triển.
+         * Nếu bảng PointHistory rỗng, tạo dữ liệu seed mẫu để tiện cho demo hoặc phát
+         * triển.
          */
         try (PreparedStatement count = con.prepareStatement("SELECT COUNT(*) FROM PointHistory");
-             ResultSet rs = count.executeQuery()) {
+                ResultSet rs = count.executeQuery()) {
             if (rs.next() && rs.getInt(1) > 0) {
                 return;
             }
@@ -54,7 +57,7 @@ public final class DBMigration {
 
         List<Integer> readerIds = new ArrayList<>();
         try (PreparedStatement ps = con.prepareStatement("SELECT TOP (8) MaDocGia FROM DocGia ORDER BY NEWID()");
-             ResultSet rs = ps.executeQuery()) {
+                ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 readerIds.add(rs.getInt(1));
             }
@@ -67,7 +70,7 @@ public final class DBMigration {
             return;
         }
 
-        String[] reasons = new String[]{
+        String[] reasons = new String[] {
                 "Trả sách đúng hạn",
                 "Trả sách sớm",
                 "Trả sách trễ",
@@ -78,8 +81,7 @@ public final class DBMigration {
         Random random = new Random();
 
         try (PreparedStatement insert = con.prepareStatement(
-                "INSERT INTO PointHistory (MaDocGia, ChangeValue, Reason, CreatedAt, CreatedBy) VALUES (?, ?, ?, ?, ?)")
-        ) {
+                "INSERT INTO PointHistory (MaDocGia, ChangeValue, Reason, CreatedAt, CreatedBy) VALUES (?, ?, ?, ?, ?)")) {
             for (int readerId : readerIds) {
                 int delta = random.nextBoolean() ? (5 + random.nextInt(6)) : -(1 + random.nextInt(4));
                 String reason = reasons[random.nextInt(reasons.length)];

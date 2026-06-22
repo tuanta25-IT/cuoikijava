@@ -42,7 +42,7 @@ public class ReaderPanel extends JPanel {
     private final AccessProfile accessProfile;
 
     private final DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"Mã", "Họ tên", "Số điện thoại", "Email", "Mã thẻ", "Loại", "Trạng thái", "Điểm"}, 0) {
+            new Object[] { "Mã", "Họ tên", "Số điện thoại", "Email", "Mã thẻ", "Loại", "Trạng thái", "Điểm" }, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -54,7 +54,7 @@ public class ReaderPanel extends JPanel {
     private final List<Reader> readers = new ArrayList<>();
 
     private final JTextField searchField = new JTextField(14);
-    private final JComboBox<StatusItem> filterStatusBox = new JComboBox<>(new StatusItem[]{
+    private final JComboBox<StatusItem> filterStatusBox = new JComboBox<>(new StatusItem[] {
             new StatusItem(null, "Tất cả"),
             new StatusItem(true, "Hoạt động"),
             new StatusItem(false, "Ngừng hoạt động")
@@ -65,11 +65,11 @@ public class ReaderPanel extends JPanel {
     private final JTextField emailField = new JTextField(14);
     private final JTextField cardField = new JTextField(10);
     private final JTextField typeField = new JTextField(8);
-    private final JComboBox<StatusItem> statusBox = new JComboBox<>(new StatusItem[]{
+    private final JComboBox<StatusItem> statusBox = new JComboBox<>(new StatusItem[] {
             new StatusItem(true, "Hoạt động"),
-                new StatusItem(false, "Ngừng hoạt động")
-            });
-            private final JSpinner trustSpinner = new JSpinner(new SpinnerNumberModel(0, -9999, 9999, 1));
+            new StatusItem(false, "Ngừng hoạt động")
+    });
+    private final JSpinner trustSpinner = new JSpinner(new SpinnerNumberModel(0, -9999, 9999, 1));
     private final JButton addBtn = new JButton("Thêm");
     private final JButton updateBtn = new JButton("Sửa");
     private final JButton deleteBtn = new JButton("Xóa");
@@ -206,8 +206,9 @@ public class ReaderPanel extends JPanel {
             List<Reader> all = readerDao.findAll();
             readers.addAll(all);
             for (Reader r : all) {
-                model.addRow(new Object[]{
-                        r.id(), r.fullName(), r.phone(), r.email(), r.cardCode(), StatusText.readerType(r.readerType()), StatusText.reader(r.active()), r.trustScore()
+                model.addRow(new Object[] {
+                        r.id(), r.fullName(), r.phone(), r.email(), r.cardCode(), StatusText.readerType(r.readerType()),
+                        StatusText.reader(r.active()), r.trustScore()
                 });
             }
             applyFilters();
@@ -306,13 +307,15 @@ public class ReaderPanel extends JPanel {
             return;
         }
         java.awt.Window owner = javax.swing.SwingUtilities.getWindowAncestor(this);
-        com.library.desktop.ui.dialog.ReaderPointsDialog dialog = new com.library.desktop.ui.dialog.ReaderPointsDialog(owner, selectedId);
+        com.library.desktop.ui.dialog.ReaderPointsDialog dialog = new com.library.desktop.ui.dialog.ReaderPointsDialog(
+                owner, selectedId);
         dialog.setVisible(true);
         loadData();
     }
 
     /**
-     * Đọc và validate dữ liệu từ form, trả về đối tượng `Reader` hoặc null nếu invalid.
+     * Đọc và validate dữ liệu từ form, trả về đối tượng `Reader` hoặc null nếu
+     * invalid.
      */
     private Reader readForm(int id) {
         String fullName = fullNameField.getText().trim();
@@ -354,8 +357,7 @@ public class ReaderPanel extends JPanel {
                 cardCode,
                 readerType,
                 status == null || status.active == null || status.active,
-                (Integer) trustSpinner.getValue()
-        );
+                (Integer) trustSpinner.getValue());
     }
 
     /**
@@ -382,7 +384,8 @@ public class ReaderPanel extends JPanel {
                         || type.contains(keyword)
                         || status.contains(keyword);
 
-                boolean matchesStatus = statusFilter == null || statusFilter.active == null || status.equalsIgnoreCase(statusFilter.label.toLowerCase());
+                boolean matchesStatus = statusFilter == null || statusFilter.active == null
+                        || status.equalsIgnoreCase(statusFilter.label.toLowerCase());
                 return matchesKeyword && matchesStatus;
             }
 

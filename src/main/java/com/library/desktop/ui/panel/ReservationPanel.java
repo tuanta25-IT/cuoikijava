@@ -32,8 +32,10 @@ public class ReservationPanel extends JPanel {
     private final ReservationDao reservationDao = new ReservationDao();
     private final AccessProfile accessProfile;
 
-        private final DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"Mã đặt", "Mã độc giả", "Độc giả", "Mã sách", "Tiêu đề", "Ngày đặt", "Hạn giữ", "Trạng thái"}, 0) {
+    private final DefaultTableModel model = new DefaultTableModel(
+            new Object[] { "Mã đặt", "Mã độc giả", "Độc giả", "Mã sách", "Tiêu đề", "Ngày đặt", "Hạn giữ",
+                    "Trạng thái" },
+            0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -62,7 +64,8 @@ public class ReservationPanel extends JPanel {
     }
 
     /**
-     * Constructor: khởi tạo panel với `AccessProfile` cụ thể để điều khiển quyền thao tác.
+     * Constructor: khởi tạo panel với `AccessProfile` cụ thể để điều khiển quyền
+     * thao tác.
      */
     public ReservationPanel(AccessProfile accessProfile) {
         this.accessProfile = accessProfile;
@@ -140,8 +143,9 @@ public class ReservationPanel extends JPanel {
             List<Reservation> all = reservationDao.findAll();
             reservations.addAll(all);
             for (Reservation r : all) {
-                model.addRow(new Object[]{
-                    r.id(), r.readerId(), r.readerName(), r.bookId(), r.bookTitle(), r.reservedAt(), r.holdUntil(), StatusText.reservation(r.status())
+                model.addRow(new Object[] {
+                        r.id(), r.readerId(), r.readerName(), r.bookId(), r.bookTitle(), r.reservedAt(), r.holdUntil(),
+                        StatusText.reservation(r.status())
                 });
             }
         } catch (Exception ex) {
@@ -150,7 +154,8 @@ public class ReservationPanel extends JPanel {
     }
 
     /**
-     * Xử lý khi người dùng chọn một hàng trong bảng; lưu lại `selectedReservationId`.
+     * Xử lý khi người dùng chọn một hàng trong bảng; lưu lại
+     * `selectedReservationId`.
      */
     private void onSelect() {
         int row = table.getSelectedRow();
@@ -161,7 +166,8 @@ public class ReservationPanel extends JPanel {
     }
 
     /**
-     * Tạo một đặt trước mới dựa trên giá trị nhập vào (readerId, bookId, holdHours).
+     * Tạo một đặt trước mới dựa trên giá trị nhập vào (readerId, bookId,
+     * holdHours).
      * Thực hiện validate và gọi DAO.
      */
     private void createReservation() {

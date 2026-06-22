@@ -27,8 +27,7 @@ public class BookDao {
                 (Integer) rs.getObject("MaTheLoai"),
                 rs.getString("TenTheLoai"),
                 rs.getString("TrangThai"),
-                (Integer) rs.getObject("SoLuong")
-        ));
+                (Integer) rs.getObject("SoLuong")));
     }
 
     public void create(Book b) throws SQLException {

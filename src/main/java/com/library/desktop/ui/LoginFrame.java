@@ -67,7 +67,7 @@ public class LoginFrame extends JFrame {
         JLabel title = new JLabel("Quản lý thư viện");
         title.setForeground(Color.WHITE);
         title.setFont(new java.awt.Font("Times New Roman", java.awt.Font.BOLD, 30));
-        JLabel subtitle = new JLabel("Ứng dụng desktop Swing cho thư viện");
+        JLabel subtitle = new JLabel("Ứng dụng desktop cho thư viện");
         subtitle.setForeground(new Color(230, 244, 255));
 
         JPanel bannerText = new JPanel(new GridLayout(2, 1, 0, 8));
@@ -86,9 +86,8 @@ public class LoginFrame extends JFrame {
 
         JPanel card = new JPanel(new BorderLayout(0, 18));
         card.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(226, 232, 240)),
-            BorderFactory.createEmptyBorder(24, 24, 24, 24)
-        ));
+                BorderFactory.createLineBorder(new Color(226, 232, 240)),
+                BorderFactory.createEmptyBorder(24, 24, 24, 24)));
         card.setBackground(AppTheme.SURFACE);
         card.setPreferredSize(new Dimension(460, 0));
 
@@ -176,8 +175,7 @@ public class LoginFrame extends JFrame {
         field.setMinimumSize(new Dimension(240, 34));
         group.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(226, 232, 240)),
-            BorderFactory.createEmptyBorder(8, 10, 8, 10)
-        ));
+                BorderFactory.createEmptyBorder(8, 10, 8, 10)));
         return group;
     }
 
@@ -191,13 +189,15 @@ public class LoginFrame extends JFrame {
 
     private void login() {
         /**
-         * Xử lý đăng nhập: đọc form, validate, gọi `AuthDao.authenticate` và khởi tạo `MainFrame` nếu thành công.
+         * Xử lý đăng nhập: đọc form, validate, gọi `AuthDao.authenticate` và khởi tạo
+         * `MainFrame` nếu thành công.
          */
         String usernameOrEmail = usernameField.getText().trim();
         String password = new String(passwordField.getPassword());
 
         if (usernameOrEmail.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin.", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin.", "Cảnh báo",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -212,7 +212,8 @@ public class LoginFrame extends JFrame {
             com.library.desktop.security.Session.setCurrentUser(user);
             new MainFrame(user).setVisible(true);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Không thể đăng nhập: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Không thể đăng nhập: " + ex.getMessage(), "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 

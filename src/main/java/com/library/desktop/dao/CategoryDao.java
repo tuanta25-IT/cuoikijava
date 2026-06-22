@@ -16,8 +16,7 @@ public class CategoryDao {
         String sql = "SELECT MaTheLoai, TenTheLoai FROM TheLoai ORDER BY MaTheLoai ASC";
         return DbTemplate.query(sql, rs -> new Category(
                 rs.getInt("MaTheLoai"),
-                rs.getString("TenTheLoai")
-        ));
+                rs.getString("TenTheLoai")));
     }
 
     public void create(String name) throws SQLException {

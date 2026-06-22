@@ -43,7 +43,7 @@ public class BookPanel extends JPanel {
     private final AccessProfile accessProfile;
 
     private final DefaultTableModel model = new DefaultTableModel(
-            new Object[]{"Mã", "Tiêu đề", "Tác giả", "Thể loại", "Trạng thái", "Số lượng"}, 0) {
+            new Object[] { "Mã", "Tiêu đề", "Tác giả", "Thể loại", "Trạng thái", "Số lượng" }, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -55,7 +55,7 @@ public class BookPanel extends JPanel {
     private final List<Book> currentBooks = new ArrayList<>();
 
     private final JTextField searchField = new JTextField(14);
-    private final JComboBox<FilterItem> filterStatusBox = new JComboBox<>(new FilterItem[]{
+    private final JComboBox<FilterItem> filterStatusBox = new JComboBox<>(new FilterItem[] {
             new FilterItem("ALL", "Tất cả"),
             new FilterItem("AVAILABLE", "Còn sách"),
             new FilterItem("BORROWING", "Đang mượn"),
@@ -64,7 +64,7 @@ public class BookPanel extends JPanel {
     });
     private final JTextField titleField = new JTextField(14);
     private final JTextField authorField = new JTextField(14);
-    private final JComboBox<StatusItem> statusBox = new JComboBox<>(new StatusItem[]{
+    private final JComboBox<StatusItem> statusBox = new JComboBox<>(new StatusItem[] {
             new StatusItem("AVAILABLE", "Còn sách"),
             new StatusItem("BORROWING", "Đang mượn"),
             new StatusItem("LOST", "Bị mất"),
@@ -209,7 +209,7 @@ public class BookPanel extends JPanel {
             List<Book> books = bookDao.findAll();
             currentBooks.addAll(books);
             for (Book b : books) {
-                model.addRow(new Object[]{
+                model.addRow(new Object[] {
                         b.id(),
                         b.title(),
                         b.author(),
@@ -321,7 +321,8 @@ public class BookPanel extends JPanel {
     }
 
     /**
-     * Đọc và validate dữ liệu từ form, trả về đối tượng `Book` hoặc null nếu invalid.
+     * Đọc và validate dữ liệu từ form, trả về đối tượng `Book` hoặc null nếu
+     * invalid.
      */
     private Book readForm(int id) {
         String title = titleField.getText().trim();
@@ -348,7 +349,8 @@ public class BookPanel extends JPanel {
             return null;
         }
 
-        return new Book(id, title, author, category == null ? null : category.id, null, status == null ? null : status.code, quantity);
+        return new Book(id, title, author, category == null ? null : category.id, null,
+                status == null ? null : status.code, quantity);
     }
 
     private void applyFilters() {
@@ -368,7 +370,8 @@ public class BookPanel extends JPanel {
                         || category.contains(keyword)
                         || status.contains(keyword);
 
-                boolean matchesStatus = statusFilter == null || "ALL".equals(statusFilter.code) || status.equalsIgnoreCase(statusFilter.label.toLowerCase());
+                boolean matchesStatus = statusFilter == null || "ALL".equals(statusFilter.code)
+                        || status.equalsIgnoreCase(statusFilter.label.toLowerCase());
                 return matchesKeyword && matchesStatus;
             }
 

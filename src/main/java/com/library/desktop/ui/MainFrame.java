@@ -103,7 +103,8 @@ public class MainFrame extends JFrame {
         JLabel title = new JLabel("Quản lý thư viện");
         title.setForeground(Color.WHITE);
         title.setFont(new java.awt.Font("Times New Roman", java.awt.Font.BOLD, 26));
-        JLabel subtitle = new JLabel("Xin chào, " + user.fullName() + " | " + (accessProfile.isStaff() ? "Nhân viên" : "Người dùng"));
+        JLabel subtitle = new JLabel(
+                "Xin chào, " + user.fullName() + " | " + (accessProfile.isStaff() ? "Nhân viên" : "Người dùng"));
         subtitle.setForeground(new Color(226, 232, 240));
         subtitle.setFont(new java.awt.Font("Times New Roman", java.awt.Font.PLAIN, 14));
         left.add(title);

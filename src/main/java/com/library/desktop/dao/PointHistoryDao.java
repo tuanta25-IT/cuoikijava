@@ -17,14 +17,15 @@ public class PointHistoryDao {
                     "PointHistory",
                     "CHANGE",
                     rs.getString("Details"),
-                    rs.getTimestamp("CreatedAt").toLocalDateTime()
-            ));
+                    rs.getTimestamp("CreatedAt").toLocalDateTime()));
             return null;
         }, readerId);
         return out;
     }
 
     public void addEntry(int readerId, int change, String reason, String by) throws SQLException {
-        DbTemplate.update("INSERT INTO PointHistory (MaDocGia, ChangeValue, Reason, CreatedAt, CreatedBy) VALUES (?, ?, ?, ?, ?)", readerId, change, reason, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), by);
+        DbTemplate.update(
+                "INSERT INTO PointHistory (MaDocGia, ChangeValue, Reason, CreatedAt, CreatedBy) VALUES (?, ?, ?, ?, ?)",
+                readerId, change, reason, java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()), by);
     }
 }

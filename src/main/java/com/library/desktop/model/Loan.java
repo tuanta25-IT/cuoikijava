@@ -9,13 +9,12 @@ package com.library.desktop.model;
 import java.time.LocalDate;
 
 public record Loan(
-        int id,
-        int readerId,
-        String readerName,
-        String readerEmail,
-        LocalDate borrowDate,
-        LocalDate dueDate,
-        LocalDate returnedDate,
-        String status
-) {
+                int id,
+                int readerId,
+                String readerName,
+                String readerEmail,
+                LocalDate borrowDate,
+                LocalDate dueDate,
+                LocalDate returnedDate,
+                String status) {
 }

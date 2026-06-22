@@ -8,14 +8,14 @@ package com.library.desktop.ui;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
- 
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
- 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -81,8 +81,7 @@ public final class FormUiHelper {
         }
         group.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(226, 232, 240)),
-                BorderFactory.createEmptyBorder(8, 10, 8, 10)
-        ));
+                BorderFactory.createEmptyBorder(8, 10, 8, 10)));
         return group;
     }
 
@@ -94,8 +93,7 @@ public final class FormUiHelper {
         section.setOpaque(false);
         section.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(226, 232, 240)),
-                BorderFactory.createEmptyBorder(12, 12, 12, 12)
-        ));
+                BorderFactory.createEmptyBorder(12, 12, 12, 12)));
 
         JLabel heading = new JLabel(title);
         heading.setFont(new Font("Times New Roman", Font.BOLD, 16));

@@ -47,9 +47,10 @@ public final class TableExportUtils {
     public static void exportExcel(Component parent, String title, JTable table) {
         /**
          * Hiển thị hộp thoại lưu file và xuất dữ liệu bảng ra file Excel.
+         * 
          * @param parent thành phần cha để hiển thị dialog
-         * @param title tiêu đề/tiền tố tên file
-         * @param table JTable chứa dữ liệu cần xuất
+         * @param title  tiêu đề/tiền tố tên file
+         * @param table  JTable chứa dữ liệu cần xuất
          */
         File file = chooseFile(parent, title, "xlsx", "Excel files");
         if (file == null) {
@@ -80,7 +81,8 @@ public final class TableExportUtils {
 
     private static File chooseFile(Component parent, String title, String extension, String description) {
         /**
-         * Hiển thị `JFileChooser` để người dùng chọn đường dẫn lưu file; đảm bảo phần mở rộng.
+         * Hiển thị `JFileChooser` để người dùng chọn đường dẫn lưu file; đảm bảo phần
+         * mở rộng.
          */
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Lưu " + title);
@@ -172,7 +174,8 @@ public final class TableExportUtils {
 
     private static String safeName(String title) {
         /**
-         * Chuẩn hóa tên tiêu đề thành tên file hợp lệ (chỉ chứa ký tự a-z0-9 và dấu gạch _).
+         * Chuẩn hóa tên tiêu đề thành tên file hợp lệ (chỉ chứa ký tự a-z0-9 và dấu
+         * gạch _).
          */
         String normalized = title == null || title.isBlank() ? "export" : title.trim().toLowerCase(Locale.ROOT);
         return normalized.replaceAll("[^a-z0-9]+", "_").replaceAll("_+", "_");

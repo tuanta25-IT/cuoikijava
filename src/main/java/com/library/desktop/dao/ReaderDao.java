@@ -30,8 +30,7 @@ public class ReaderDao {
                 rs.getString("MaThe"),
                 rs.getString("LoaiDocGia"),
                 readActive(rs.getObject("TrangThai")),
-                (Integer) rs.getObject("DiemUyTin")
-        ));
+                (Integer) rs.getObject("DiemUyTin")));
     }
 
     public Reader findByEmail(String email) throws SQLException {
@@ -47,8 +46,7 @@ public class ReaderDao {
                 rs.getString("MaThe"),
                 rs.getString("LoaiDocGia"),
                 readActive(rs.getObject("TrangThai")),
-                (Integer) rs.getObject("DiemUyTin")
-        ), email);
+                (Integer) rs.getObject("DiemUyTin")), email);
     }
 
     public Reader findById(int id) throws SQLException {
@@ -64,8 +62,7 @@ public class ReaderDao {
                 rs.getString("MaThe"),
                 rs.getString("LoaiDocGia"),
                 readActive(rs.getObject("TrangThai")),
-                (Integer) rs.getObject("DiemUyTin")
-        ), id);
+                (Integer) rs.getObject("DiemUyTin")), id);
     }
 
     public void create(Reader r) throws SQLException {
@@ -76,13 +73,15 @@ public class ReaderDao {
                 INSERT INTO DocGia (HoTen, SoDienThoai, Email, MaThe, LoaiDocGia, DiemUyTin, TrangThai)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
-        DbTemplate.update(sql, r.fullName(), r.phone(), r.email(), r.cardCode(), r.readerType(), r.trustScore(), r.active() ? 1 : 0);
+        DbTemplate.update(sql, r.fullName(), r.phone(), r.email(), r.cardCode(), r.readerType(), r.trustScore(),
+                r.active() ? 1 : 0);
         try {
             var user = com.library.desktop.security.Session.getCurrentUser();
             if (user != null) {
                 new AuditDao().log(user.username(), "DocGia", "CREATE", "Tạo độc giả: " + r.fullName());
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public void update(Reader r) throws SQLException {
@@ -94,13 +93,15 @@ public class ReaderDao {
                 SET HoTen = ?, SoDienThoai = ?, Email = ?, MaThe = ?, LoaiDocGia = ?, DiemUyTin = ?, TrangThai = ?
                 WHERE MaDocGia = ?
                 """;
-        DbTemplate.update(sql, r.fullName(), r.phone(), r.email(), r.cardCode(), r.readerType(), r.trustScore(), r.active() ? 1 : 0, r.id());
+        DbTemplate.update(sql, r.fullName(), r.phone(), r.email(), r.cardCode(), r.readerType(), r.trustScore(),
+                r.active() ? 1 : 0, r.id());
         try {
             var user = com.library.desktop.security.Session.getCurrentUser();
             if (user != null) {
                 new AuditDao().log(user.username(), "DocGia", "UPDATE", "Cập nhật độc giả: " + r.id());
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public void delete(int id) throws SQLException {
@@ -113,14 +114,16 @@ public class ReaderDao {
             if (user != null) {
                 new AuditDao().log(user.username(), "DocGia", "DELETE", "Xóa độc giả: " + id);
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public void adjustPoints(int readerId, int delta) throws SQLException {
         /**
          * Điều chỉnh điểm uy tín (DiemUyTin) của độc giả.
          */
-        DbTemplate.update("UPDATE DocGia SET DiemUyTin = COALESCE(DiemUyTin,0) + ? WHERE MaDocGia = ?", delta, readerId);
+        DbTemplate.update("UPDATE DocGia SET DiemUyTin = COALESCE(DiemUyTin,0) + ? WHERE MaDocGia = ?", delta,
+                readerId);
     }
 
     private boolean readActive(Object value) {

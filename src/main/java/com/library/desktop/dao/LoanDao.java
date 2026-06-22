@@ -34,15 +34,14 @@ public class LoanDao {
                 """;
 
         return DbTemplate.query(sql, rs -> new Loan(
-            rs.getInt("MaPhieuMuon"),
-            rs.getInt("MaDocGia"),
-            rs.getString("HoTen"),
-            rs.getString("Email"),
-            toLocalDate(rs.getDate("NgayMuon")),
-            toLocalDate(rs.getDate("NgayTraDuKien")),
-            toLocalDate(rs.getDate("NgayTraThuc")),
-            rs.getString("TrangThai")
-        ));
+                rs.getInt("MaPhieuMuon"),
+                rs.getInt("MaDocGia"),
+                rs.getString("HoTen"),
+                rs.getString("Email"),
+                toLocalDate(rs.getDate("NgayMuon")),
+                toLocalDate(rs.getDate("NgayTraDuKien")),
+                toLocalDate(rs.getDate("NgayTraThuc")),
+                rs.getString("TrangThai")));
     }
 
     public Loan findById(int loanId) throws SQLException {
@@ -58,15 +57,14 @@ public class LoanDao {
                 """;
 
         return DbTemplate.queryOne(sql, rs -> new Loan(
-            rs.getInt("MaPhieuMuon"),
-            rs.getInt("MaDocGia"),
-            rs.getString("HoTen"),
-            rs.getString("Email"),
-            toLocalDate(rs.getDate("NgayMuon")),
-            toLocalDate(rs.getDate("NgayTraDuKien")),
-            toLocalDate(rs.getDate("NgayTraThuc")),
-            rs.getString("TrangThai")
-        ), loanId);
+                rs.getInt("MaPhieuMuon"),
+                rs.getInt("MaDocGia"),
+                rs.getString("HoTen"),
+                rs.getString("Email"),
+                toLocalDate(rs.getDate("NgayMuon")),
+                toLocalDate(rs.getDate("NgayTraDuKien")),
+                toLocalDate(rs.getDate("NgayTraThuc")),
+                rs.getString("TrangThai")), loanId);
     }
 
     public List<LoanItem> findItemsByLoanId(int loanId) throws SQLException {
@@ -86,8 +84,7 @@ public class LoanDao {
                 rs.getInt("MaPhieuMuon"),
                 rs.getInt("MaSach"),
                 rs.getString("TieuDe"),
-                (Integer) rs.getObject("SoLuong")
-        ), loanId);
+                (Integer) rs.getObject("SoLuong")), loanId);
     }
 
     public int create(int readerId, LocalDate borrowDate, LocalDate dueDate) throws SQLException {
@@ -99,7 +96,7 @@ public class LoanDao {
                 VALUES (?, ?, ?, N'BORROWING', 0)
                 """;
         try (Connection con = DatabaseManager.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, readerId);
             ps.setDate(2, Date.valueOf(borrowDate));
             ps.setDate(3, Date.valueOf(dueDate));
@@ -110,9 +107,11 @@ public class LoanDao {
                     try {
                         var user = com.library.desktop.security.Session.getCurrentUser();
                         if (user != null) {
-                            new com.library.desktop.dao.AuditDao().log(user.username(), "PhieuMuon", "CREATE", "Tạo phiếu mượn: " + id + " cho độc giả " + readerId);
+                            new com.library.desktop.dao.AuditDao().log(user.username(), "PhieuMuon", "CREATE",
+                                    "Tạo phiếu mượn: " + id + " cho độc giả " + readerId);
                         }
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                     return id;
                 }
             }
@@ -122,7 +121,8 @@ public class LoanDao {
 
     public void markReturned(int loanId, LocalDate returnedDate) throws SQLException {
         /**
-         * Đánh dấu một phiếu mượn là đã trả, cập nhật kho (restore stock) và điều chỉnh điểm độc giả.
+         * Đánh dấu một phiếu mượn là đã trả, cập nhật kho (restore stock) và điều chỉnh
+         * điểm độc giả.
          */
         try (Connection con = DatabaseManager.getConnection()) {
             con.setAutoCommit(false);
@@ -146,7 +146,8 @@ public class LoanDao {
                 // adjust reader points based on returned date vs due date
                 try {
                     LocalDate due = null;
-                    try (PreparedStatement q = con.prepareStatement("SELECT MaDocGia, NgayTraDuKien FROM PhieuMuon WHERE MaPhieuMuon = ?")) {
+                    try (PreparedStatement q = con
+                            .prepareStatement("SELECT MaDocGia, NgayTraDuKien FROM PhieuMuon WHERE MaPhieuMuon = ?")) {
                         q.setInt(1, loanId);
                         try (java.sql.ResultSet rs = q.executeQuery()) {
                             if (rs.next()) {
@@ -156,13 +157,15 @@ public class LoanDao {
                                 if (due != null) {
                                     int delta = returnedDate.isBefore(due) || returnedDate.isEqual(due) ? 10 : -2;
                                     // update DocGia.DiemUyTin
-                                    try (PreparedStatement up = con.prepareStatement("UPDATE DocGia SET DiemUyTin = COALESCE(DiemUyTin,0) + ? WHERE MaDocGia = ?")) {
+                                    try (PreparedStatement up = con.prepareStatement(
+                                            "UPDATE DocGia SET DiemUyTin = COALESCE(DiemUyTin,0) + ? WHERE MaDocGia = ?")) {
                                         up.setInt(1, delta);
                                         up.setInt(2, readerId);
                                         up.executeUpdate();
                                     }
                                     // insert into PointHistory
-                                    try (PreparedStatement ph = con.prepareStatement("INSERT INTO PointHistory (MaDocGia, ChangeValue, Reason, CreatedAt, CreatedBy) VALUES (?, ?, ?, ?, ?)")) {
+                                    try (PreparedStatement ph = con.prepareStatement(
+                                            "INSERT INTO PointHistory (MaDocGia, ChangeValue, Reason, CreatedAt, CreatedBy) VALUES (?, ?, ?, ?, ?)")) {
                                         ph.setInt(1, readerId);
                                         ph.setInt(2, delta);
                                         ph.setString(3, delta > 0 ? "Trả đúng hạn" : "Trả trễ");
@@ -175,14 +178,17 @@ public class LoanDao {
                             }
                         }
                     }
-                } catch (Exception ignored) {}
+                } catch (Exception ignored) {
+                }
 
-                    try {
-                        var user = com.library.desktop.security.Session.getCurrentUser();
-                        if (user != null) {
-                            new com.library.desktop.dao.AuditDao().log(user.username(), "PhieuMuon", "RETURN", "Đánh dấu trả: " + loanId);
-                        }
-                    } catch (Exception ignored) {}
+                try {
+                    var user = com.library.desktop.security.Session.getCurrentUser();
+                    if (user != null) {
+                        new com.library.desktop.dao.AuditDao().log(user.username(), "PhieuMuon", "RETURN",
+                                "Đánh dấu trả: " + loanId);
+                    }
+                } catch (Exception ignored) {
+                }
                 con.commit();
             } catch (SQLException ex) {
                 con.rollback();
@@ -228,7 +234,8 @@ public class LoanDao {
 
     public void updateBorrowDates(int loanId, LocalDate borrowDate, LocalDate dueDate) throws SQLException {
         /**
-         * Cập nhật NgayMuon và NgayTraDuKien cho phiếu mượn; kiểm tra tính hợp lệ trước khi cập nhật.
+         * Cập nhật NgayMuon và NgayTraDuKien cho phiếu mượn; kiểm tra tính hợp lệ trước
+         * khi cập nhật.
          */
         if (borrowDate == null || dueDate == null) {
             throw new SQLException("Ngày mượn và ngày trả dự kiến không được để trống");
@@ -266,8 +273,7 @@ public class LoanDao {
                                 user.username(),
                                 "PhieuMuon",
                                 "UPDATE",
-                                "Cập nhật ngày mượn/ngày trả dự kiến cho phiếu: " + loanId
-                        );
+                                "Cập nhật ngày mượn/ngày trả dự kiến cho phiếu: " + loanId);
                     }
                 } catch (Exception ignored) {
                 }
@@ -322,7 +328,8 @@ public class LoanDao {
 
     public void removeItem(int detailId) throws SQLException {
         /**
-         * Xóa một chi tiết phiếu mượn và trả lại tồn kho nếu phiếu không ở trạng thái PENDING.
+         * Xóa một chi tiết phiếu mượn và trả lại tồn kho nếu phiếu không ở trạng thái
+         * PENDING.
          */
         try (Connection con = DatabaseManager.getConnection()) {
             con.setAutoCommit(false);
@@ -330,7 +337,8 @@ public class LoanDao {
                 Integer loanId = null;
                 Integer bookId = null;
                 Integer quantity = null;
-                try (PreparedStatement ps = con.prepareStatement("SELECT MaPhieuMuon, MaSach, SoLuong FROM ChiTietPhieuMuon WHERE MaChiTiet = ?")) {
+                try (PreparedStatement ps = con.prepareStatement(
+                        "SELECT MaPhieuMuon, MaSach, SoLuong FROM ChiTietPhieuMuon WHERE MaChiTiet = ?")) {
                     ps.setInt(1, detailId);
                     try (ResultSet rs = ps.executeQuery()) {
                         if (rs.next()) {
@@ -406,7 +414,8 @@ public class LoanDao {
         /**
          * Điều chỉnh tồn kho cho sách (tăng/giảm theo `delta`).
          */
-        try (PreparedStatement ps = con.prepareStatement("UPDATE Sach SET SoLuong = COALESCE(SoLuong, 0) + ? WHERE MaSach = ?")) {
+        try (PreparedStatement ps = con
+                .prepareStatement("UPDATE Sach SET SoLuong = COALESCE(SoLuong, 0) + ? WHERE MaSach = ?")) {
             ps.setInt(1, delta);
             ps.setInt(2, bookId);
             ps.executeUpdate();
@@ -415,9 +424,11 @@ public class LoanDao {
 
     private void restoreStockForLoan(Connection con, int loanId) throws SQLException {
         /**
-         * Trả lại tồn kho cho tất cả sách thuộc chi tiết phiếu mượn (khi phiếu được đánh dấu đã trả).
+         * Trả lại tồn kho cho tất cả sách thuộc chi tiết phiếu mượn (khi phiếu được
+         * đánh dấu đã trả).
          */
-        try (PreparedStatement ps = con.prepareStatement("SELECT MaSach, SoLuong FROM ChiTietPhieuMuon WHERE MaPhieuMuon = ?")) {
+        try (PreparedStatement ps = con
+                .prepareStatement("SELECT MaSach, SoLuong FROM ChiTietPhieuMuon WHERE MaPhieuMuon = ?")) {
             ps.setInt(1, loanId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -429,7 +440,8 @@ public class LoanDao {
         }
     }
 
-    public java.util.List<com.library.desktop.model.LoanInfo> findActiveLoansDueOn(java.time.LocalDate date) throws SQLException {
+    public java.util.List<com.library.desktop.model.LoanInfo> findActiveLoansDueOn(java.time.LocalDate date)
+            throws SQLException {
         /**
          * Tìm các phiếu mượn đang mượn (BORROWING) có `NgayTraDuKien` bằng `date`.
          */
@@ -445,8 +457,7 @@ public class LoanDao {
                     rs.getInt("MaDocGia"),
                     rs.getString("HoTen"),
                     rs.getString("Email"),
-                    toLocalDate(rs.getDate("NgayTraDuKien"))
-            );
+                    toLocalDate(rs.getDate("NgayTraDuKien")));
             return info;
         }, java.sql.Date.valueOf(date));
     }

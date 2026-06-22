@@ -28,7 +28,7 @@ import java.util.List;
 public class CategoryPanel extends JPanel {
     private final CategoryDao categoryDao = new CategoryDao();
     private final AccessProfile accessProfile;
-    private final DefaultTableModel model = new DefaultTableModel(new Object[]{"Mã", "Tên thể loại"}, 0) {
+    private final DefaultTableModel model = new DefaultTableModel(new Object[] { "Mã", "Tên thể loại" }, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -126,7 +126,7 @@ public class CategoryPanel extends JPanel {
         try {
             List<Category> categories = categoryDao.findAll();
             for (Category c : categories) {
-                model.addRow(new Object[]{c.id(), c.name()});
+                model.addRow(new Object[] { c.id(), c.name() });
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);

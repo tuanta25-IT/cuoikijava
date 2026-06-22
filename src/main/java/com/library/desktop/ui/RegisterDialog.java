@@ -17,7 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
- 
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -33,11 +33,11 @@ public class RegisterDialog extends JDialog {
     private final JTextField fullNameField = new JTextField();
     private final JPasswordField passwordField = new JPasswordField();
     private final JPasswordField confirmPasswordField = new JPasswordField();
-    private final JComboBox<RoleItem> roleBox = new JComboBox<>(new RoleItem[]{
+    private final JComboBox<RoleItem> roleBox = new JComboBox<>(new RoleItem[] {
             new RoleItem("ROLE_USER", "Người dùng"),
             new RoleItem("ROLE_LIBRARIAN", "Thủ thư"),
             new RoleItem("ROLE_ADMIN", "Quản trị viên")
-        });
+    });
     private final JCheckBox showPasswordBox = new JCheckBox("Hiện mật khẩu");
     private final AuthDao authDao;
 
@@ -60,8 +60,7 @@ public class RegisterDialog extends JDialog {
         card.setBackground(AppTheme.SURFACE);
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(226, 232, 240)),
-            BorderFactory.createEmptyBorder(22, 22, 22, 22)
-        ));
+                BorderFactory.createEmptyBorder(22, 22, 22, 22)));
 
         JLabel title = new JLabel("Tạo tài khoản mới");
         title.setFont(new java.awt.Font("Times New Roman", java.awt.Font.BOLD, 24));
@@ -131,7 +130,8 @@ public class RegisterDialog extends JDialog {
 
     private void register() {
         /**
-         * Xử lý đăng ký: validate form, gọi `authDao.registerUser`, tạo hồ sơ độc giả nếu cần.
+         * Xử lý đăng ký: validate form, gọi `authDao.registerUser`, tạo hồ sơ độc giả
+         * nếu cần.
          */
         String username = usernameField.getText().trim();
         String email = emailField.getText().trim();
@@ -173,7 +173,8 @@ public class RegisterDialog extends JDialog {
                 try {
                     authDao.ensureReaderProfileFor(fullName, email, role == null ? null : role.code);
                 } catch (Exception ex) {
-                    FormUiHelper.showWarning(this, "Đăng ký thành công nhưng không tạo được hồ sơ độc giả: " + ex.getMessage());
+                    FormUiHelper.showWarning(this,
+                            "Đăng ký thành công nhưng không tạo được hồ sơ độc giả: " + ex.getMessage());
                     dispose();
                     return;
                 }

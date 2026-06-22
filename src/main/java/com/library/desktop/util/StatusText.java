@@ -2,7 +2,8 @@ package com.library.desktop.util;
 
 /**
  * File: StatusText.java
- * Mô tả: Chuyển đổi mã trạng thái (status code) sang chuỗi hiển thị bằng tiếng Việt.
+ * Mô tả: Chuyển đổi mã trạng thái (status code) sang chuỗi hiển thị bằng tiếng
+ * Việt.
  * Bao gồm trạng thái cho sách, phiếu mượn, đặt trước và thông tin độc giả.
  */
 

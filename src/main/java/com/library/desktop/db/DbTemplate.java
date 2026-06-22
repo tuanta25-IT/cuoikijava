@@ -24,23 +24,25 @@ public final class DbTemplate {
 
     /**
      * Thực thi câu lệnh INSERT/UPDATE/DELETE với tham số.
+     * 
      * @return số dòng bị ảnh hưởng
      */
     public static int update(String sql, Object... params) throws SQLException {
         try (Connection con = DatabaseManager.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
             bind(ps, params);
             return ps.executeUpdate();
         }
     }
 
     /**
-     * Thực thi truy vấn trả về nhiều dòng; sử dụng `RowMapper` để ánh xạ từng `ResultSet`.
+     * Thực thi truy vấn trả về nhiều dòng; sử dụng `RowMapper` để ánh xạ từng
+     * `ResultSet`.
      */
     public static <T> List<T> query(String sql, RowMapper<T> mapper, Object... params) throws SQLException {
         List<T> items = new ArrayList<>();
         try (Connection con = DatabaseManager.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+                PreparedStatement ps = con.prepareStatement(sql)) {
             bind(ps, params);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -52,7 +54,8 @@ public final class DbTemplate {
     }
 
     /**
-     * Thực thi truy vấn mong đợi một dòng kết quả. Trả về null nếu không có dòng nào.
+     * Thực thi truy vấn mong đợi một dòng kết quả. Trả về null nếu không có dòng
+     * nào.
      */
     public static <T> T queryOne(String sql, RowMapper<T> mapper, Object... params) throws SQLException {
         List<T> result = query(sql, mapper, params);
